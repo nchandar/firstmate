@@ -1,0 +1,38 @@
+OpenCode 2 primary-plugin load validation
+==========================================
+Host: opencode v2.0.22 (user intent verified against 2.0.21; parity confirmed), node v26.10.0
+Driver: isolated throwaway project + isolated XDG/HOME; copied the five ported
+fm.primary.* plugins plus lib/fm-opencode2.js + lib/fm-operational-input.js into
+.opencode/plugins, then ran:
+  opencode run --standalone --print-logs --format json "hi"
+and captured the private server's plugin-load stderr before teardown.
+
+====================================================================
+POSITIVE: all five ported fm.primary.* plugins load clean on OpenCode 2
+(verbatim stderr, level=INFO; no LoadError, no level=ERROR anywhere)
+====================================================================
+level=INFO msg="loading plugin" id=.../.opencode/plugins/fm-primary-cd-check.js          entrypoint=file://.../fm-primary-cd-check.js          role=server
+level=INFO msg="loading plugin" id=.../.opencode/plugins/fm-primary-pretool-check.js     entrypoint=file://.../fm-primary-pretool-check.js     role=server
+level=INFO msg="loading plugin" id=.../.opencode/plugins/fm-primary-sessionstart-nudge.js entrypoint=file://.../fm-primary-sessionstart-nudge.js role=server
+level=INFO msg="loading plugin" id=.../.opencode/plugins/fm-primary-turnend-guard.js     entrypoint=file://.../fm-primary-turnend-guard.js     role=server
+level=INFO msg="loading plugin" id=.../.opencode/plugins/fm-primary-watch-arm.js         entrypoint=file://.../fm-primary-watch-arm.js         role=server
+
+grep -iE "level=ERROR|LoadError|must export" over the full 114-line positive run: <none>
+
+The lib modules (fm-opencode2.js, fm-operational-input.js) are watched as file
+deps and the server ran the full load+setup window (~4s) and shut down with no
+plugin error, i.e. every default { id, setup } export was accepted.
+
+====================================================================
+NEGATIVE CONTROL: proves the probe can detect the failure the port fixes.
+Stripped the `export default { id, setup }` block from fm-primary-cd-check.js
+(recreating the v1-only shape). OpenCode 2 then emitted exactly:
+====================================================================
+level=WARN message="failed to load plugin" target=.../fm-primary-cd-check.js ref=err_7a36cdd7 \
+  cause="Cause([Fail(PluginModule.LoadError: Plugin must export a default definition with an id \
+  and an effect or setup function. (cause: SchemaError(Missing key at [\"default\"])))])" role=server
+
+Conclusion: with the ported plugins the LoadError is absent and all five load
+clean; the identical error appears the instant a default export is missing. This
+is the precise failure mode documented in docs/opencode-2-plugin-port-scope.md
+that the port exists to fix.
