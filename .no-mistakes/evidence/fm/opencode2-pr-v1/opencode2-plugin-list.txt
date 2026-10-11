@@ -1,0 +1,10 @@
+### OpenCode version on this host
+opencode v2.0.26
+
+### opencode plugin list (run from the worktree) - all five fm.primary.* load clean with declared ids
+ID                                       VERSION  SOURCE
+fm.primary.cd-check                      local    /Users/niranjanchandarraj/.no-mistakes/worktrees/202df2ceeeaf/01M4P5B8D7VE3W9QRY6NQB2H2T/.opencode/plugins/fm-primary-cd-check.js
+fm.primary.pretool-check                 local    /Users/niranjanchandarraj/.no-mistakes/worktrees/202df2ceeeaf/01M4P5B8D7VE3W9QRY6NQB2H2T/.opencode/plugins/fm-primary-pretool-check.js
+fm.primary.sessionstart-nudge            local    /Users/niranjanchandarraj/.no-mistakes/worktrees/202df2ceeeaf/01M4P5B8D7VE3W9QRY6NQB2H2T/.opencode/plugins/fm-primary-sessionstart-nudge.js
+fm.primary.turnend-guard                 local    /Users/niranjanchandarraj/.no-mistakes/worktrees/202df2ceeeaf/01M4P5B8D7VE3W9QRY6NQB2H2T/.opencode/plugins/fm-primary-turnend-guard.js
+fm.primary.watch-arm                     local    /Users/niranjanchandarraj/.no-mistakes/worktrees/202df2ceeeaf/01M4P5B8D7VE3W9QRY6NQB2H2T/.opencode/plugins/fm-primary-watch-arm.js
